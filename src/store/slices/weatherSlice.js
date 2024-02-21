@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getWeatherAPI = createAsyncThunk(
+export const getWeatherCityAPI = createAsyncThunk(
     'weather/getWeatherAPI',
-    async function() {
-        const responce = await fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=56387bacfda787e0e25897d8d1c58be3');
+    async function(city) {
+        const responce = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=56387bacfda787e0e25897d8d1c58be3`);
 
         const data = await responce.json();
 
@@ -23,10 +23,10 @@ const weatherSlice = createSlice({
         }
     },
     extraReducers: builder => {
-        builder.addCase(getWeatherAPI.pending, (state) => {
+        builder.addCase(getWeatherCityAPI.pending, (state) => {
             state.status = 'loading';
         });
-        builder.addCase(getWeatherAPI.fulfilled, (state, action) => {
+        builder.addCase(getWeatherCityAPI.fulfilled, (state, action) => {
             state.status = 'resolved';
             state.weatherData = action.payload;
         })
